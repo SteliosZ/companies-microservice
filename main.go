@@ -1,7 +1,24 @@
 package main
 
-import "fmt"
+import (
+	"company/microservice/router"
+	"log"
+
+	"github.com/gofiber/fiber/v2"
+)
 
 func main() {
-	fmt.Println("Initial Commit...")
+
+	// Initialize Rest
+	app := fiber.New(fiber.Config{
+		AppName: "Company Handler Microservice",
+	})
+
+	// Initialize DB Connection
+
+	// Setup Routes
+	router.SetupRoutes(app)
+
+	// Start Rest
+	log.Fatal(app.Listen(":8080"))
 }
