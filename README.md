@@ -1,10 +1,4 @@
 #### Keeping log before finalizing...
-
-### RestAPI
-- I'm more familiar with Fiber v2, so I will use this framework as the RESTAPI.
-  
-`go get github.com/gofiber/fiber/v2`
-
 - Microservice Should have:
   1. Create
   2. Patch
@@ -30,3 +24,18 @@
   - Integration tests are highly appreciated
   - Linter
   - Configuration file
+
+### RestAPI
+- I'm more familiar with Fiber v2, so I will use this framework as the RESTAPI.
+- Postgresql for database
+- Gorm to handle the structs in Go
+- Docker for containerization 
+
+- Steps (Roughly):
+  - Create placeholders for files and functionalities
+  - Implement CRUD Functionality
+  - Implement DB Driver
+  - Implement Kafka Driver
+  - Implement "Auth" (JWT)
+  - Containerize
+  - If time, integration tests

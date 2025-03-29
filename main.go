@@ -1,6 +1,7 @@
 package main
 
 import (
+	"company/microservice/database"
 	"company/microservice/router"
 	"log"
 
@@ -8,13 +9,13 @@ import (
 )
 
 func main() {
-
 	// Initialize Rest
 	app := fiber.New(fiber.Config{
 		AppName: "Company Handler Microservice",
 	})
 
 	// Initialize DB Connection
+	database.ConnectToDB()
 
 	// Setup Routes
 	router.SetupRoutes(app)
