@@ -1,8 +1,6 @@
 package model
 
 import (
-	"time"
-
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
@@ -18,13 +16,15 @@ const (
 	SoleProprietorship CompanyType = "Sole Proprietorship"
 )
 
-// Company Struct
-// @ID - uuid - required
-// @Name - 15 Chars - required - unique
-// @Description - 3000 Characters - optional
-// @Amount of Employees - int - required
-// @Registered - bool - required
-// @Type - CompanyType - required
+/*
+Company Struct
+@ID - uuid - required
+@Name - 15 Chars - required - unique
+@Description - 3000 Characters - optional
+@Amount of Employees - int - required
+@Registered - bool - required
+@Type - CompanyType - required
+*/
 type Company struct {
 	gorm.Model
 	ID                uuid.UUID   `gorm:"primaryKey;type:uuid;default:uuid_generate_v4()" json:"id"`
@@ -33,6 +33,10 @@ type Company struct {
 	AmountOfEmployees int         `gorm:"type:integer;not null" json:"amount_of_employees"`
 	Registered        bool        `gorm:"type:boolean;not null" json:"registered"`
 	Type              CompanyType `gorm:"type:varchar(50);not null" json:"type"`
-	CreatedAt         time.Time
-	UpdatedAt         time.Time
+}
+
+func (user *Company) BeforeCreate(tx *gorm.DB) (err error) {
+	// UUID version 4
+	user.ID = uuid.New()
+	return
 }

@@ -12,6 +12,8 @@ func SetupRoutes(app *fiber.App) {
 	api := app.Group("/api", logger.New())
 	api.Get("/", handler.Hello)
 
+	// TODO: JWT Middleware
+
 	// Company Routes
 	company := api.Group("/company")
 	company.Get("/:id", handler.GetCompany)

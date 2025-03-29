@@ -10,7 +10,13 @@ import (
 	"gorm.io/gorm"
 )
 
-func ConnectToDB() {
+type DBInstance struct {
+	DB *gorm.DB
+}
+
+var DB DBInstance
+
+func Connect() {
 	// Define Data Source Name
 	dsn := fmt.Sprintf("host=%v user=%v password=%v dbname=%v port=%v sslmode=%v",
 		config.Config("POSTGRES_HOST"),
@@ -33,4 +39,8 @@ func ConnectToDB() {
 	}
 
 	log.Println("Database Migrated successfully")
+
+	DB = DBInstance{
+		DB: db,
+	}
 }
