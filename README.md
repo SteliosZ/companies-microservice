@@ -34,12 +34,12 @@
 - Docker for containerization 
 
 - Steps (Roughly):
-  - Create placeholders for files and functionalities - Check
-  - Implement CRUD Functionality - Check 
-  - Implement DB Driver - Check 
-  - Implement "Auth" (JWT) - TODO
-  - Implement Kafka Driver - TODO
+  - Create placeholders for files and functionalities - Done
+  - Implement CRUD Functionality - Done 
+  - Implement DB Driver - Done 
+  - Implement "Auth" (JWT) - Done
   - Containerize - TODO
+  - Implement Kafka Driver - TODO
   - If time, integration tests - TODO
 
 ### API Methods
@@ -51,3 +51,8 @@
   - PATCH `/api/company/{companyName}` - Update an existing Company Entry (by Name) 
   - DELETE `/api/company/{companyName}` - Delete a single Company by Name
 
+### Docker Run
+In order to run the application with docker, you have to:
+1. Build the companies-microservice image: `docker build --tag companies-microservice .`
+2. Run the compose file with both the companies-microservice and the db (postgresql): `docker compose up -d`
+3. Now the rest api is exposed to localhost:8080 and can accept requests.

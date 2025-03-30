@@ -1,8 +1,10 @@
 package main
 
 import (
+	"company/microservice/config"
 	"company/microservice/database"
 	"company/microservice/router"
+	"fmt"
 	"log"
 
 	"github.com/gofiber/fiber/v2"
@@ -28,5 +30,5 @@ func main() {
 	})
 
 	// Start Rest
-	log.Fatal(app.Listen(":8080"))
+	log.Fatal(app.Listen(fmt.Sprintf(":%v", config.Config("SERVICE_EXPOSED_PORT"))))
 }

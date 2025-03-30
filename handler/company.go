@@ -61,7 +61,7 @@ func CreateCompany(c *fiber.Ctx) error {
 	return c.Status(http.StatusOK).
 		JSON(fiber.Map{
 			"status":  "success",
-			"message": "company create",
+			"message": "company creation successful",
 			"data":    err,
 		})
 }
