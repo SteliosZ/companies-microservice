@@ -19,7 +19,7 @@ func main() {
 	app.Use(cors.New())
 
 	// Initialize DB Connection
-	database.Connect()
+	database.ConnectToDB()
 
 	// Setup Routes
 	router.SetupRoutes(app)

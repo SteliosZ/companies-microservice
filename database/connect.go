@@ -25,7 +25,7 @@ type ConnectionConfig struct {
 	SSLMode  string
 }
 
-func Connect() {
+func ConnectToDB() {
 
 	connConfig := ConnectionConfig{
 		Host:     config.Config("POSTGRES_HOST"),
