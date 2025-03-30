@@ -18,6 +18,6 @@ func SetupRoutes(app *fiber.App) {
 	company := api.Group("/company")
 	company.Get("/:name", handler.GetCompany)
 	company.Post("/", handler.CreateCompany)
-	company.Patch(":id", handler.UpdateCompany)
+	company.Patch(":name", handler.UpdateCompany)
 	company.Delete("/:name", handler.DeleteCompany)
 }

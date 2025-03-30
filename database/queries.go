@@ -5,12 +5,12 @@ import (
 )
 
 // GetCompany queries postgres to get one company by name
-func GetCompany(name string) (error, model.Company) {
+func GetCompany(companyName string) (error, model.Company) {
 	db := DB.DB
 	var company = model.Company{}
 
 	// Query DB
-	res := db.First(&company, model.Company{Name: name})
+	res := db.First(&company, model.Company{Name: companyName})
 
 	return res.Error, company
 }
@@ -31,6 +31,20 @@ func DeleteCompany(name string) error {
 
 	// Query DB
 	res := db.Where(&company).Delete(&model.Company{})
+
+	return res.Error
+}
+
+func UpdateCompany(companyName string, updatedFields map[string]interface{}) error {
+	db := DB.DB
+
+	var company = model.Company{}
+	res := db.First(&company, model.Company{Name: companyName})
+	if res.Error != nil {
+		return res.Error
+	}
+
+	res = db.Model(&company).Updates(updatedFields)
 
 	return res.Error
 }

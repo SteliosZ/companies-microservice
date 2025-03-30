@@ -9,13 +9,13 @@ import (
 
 func GetCompany(c *fiber.Ctx) error {
 	// Handle Params
-	name := c.Params("name")
+	companyName := c.Params("name")
 
-	err, res := database.GetCompany(name)
+	err, res := database.GetCompany(companyName)
 	if err != nil {
 		return c.Status(404).JSON(fiber.Map{
 			"status":  "error",
-			"message": "object not found",
+			"message": "company not found",
 			"data":    err,
 		})
 	}
@@ -44,43 +44,64 @@ func CreateCompany(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(500).JSON(fiber.Map{
 			"status":  "error",
-			"message": "Could not create user",
+			"message": "company not created",
 			"data":    err,
 		})
 	}
 
 	return c.Status(201).JSON(fiber.Map{
 		"status":  "success",
-		"message": "User has created",
+		"message": "company create",
 		"data":    company,
 	})
 }
 
 func UpdateCompany(c *fiber.Ctx) error {
+	newDetails := map[string]interface{}{}
 
-	return c.Status(200).JSON(fiber.Map{
+	companyName := c.Params("name")
+
+	// Parse and Check Body
+	if err := c.BodyParser(&newDetails); err != nil {
+		return c.Status(500).JSON(fiber.Map{
+			"status":  "error",
+			"message": "wrong input data",
+			"data":    err,
+		})
+	}
+
+	err := database.UpdateCompany(companyName, newDetails)
+	if err != nil {
+		return c.Status(409).JSON(fiber.Map{
+			"status": "error",
+			"mesage": "resource conflict",
+			"data":   err,
+		})
+	}
+
+	return c.Status(204).JSON(fiber.Map{
 		"status": "success",
-		"mesage": "got one company",
+		"mesage": "company updated",
 		"data":   nil,
 	})
 }
 
 func DeleteCompany(c *fiber.Ctx) error {
 	// Handle Params
-	name := c.Params("name")
+	companyName := c.Params("name")
 
-	err := database.DeleteCompany(name)
+	err := database.DeleteCompany(companyName)
 	if err != nil {
 		return c.Status(409).JSON(fiber.Map{
 			"status":  "error",
-			"message": "object not deleted",
+			"message": "company not deleted",
 			"data":    err,
 		})
 	}
 
 	return c.Status(200).JSON(fiber.Map{
 		"status": "success",
-		"mesage": "deleted",
+		"mesage": "company deleted",
 		"data":   nil,
 	})
 }
