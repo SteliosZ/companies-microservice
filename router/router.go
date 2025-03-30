@@ -12,7 +12,10 @@ func SetupRoutes(app *fiber.App) {
 	api := app.Group("/api", logger.New())
 	api.Get("/", handler.Hello)
 
-	// TODO: JWT Middleware
+	// JWT Middleware
+	auth := api.Group("/auth")
+	auth.Post("/login", handler.Login)
+	auth.Post("/register", handler.Register)
 
 	// Company Routes
 	company := api.Group("/company")

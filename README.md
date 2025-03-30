@@ -13,6 +13,8 @@
   - Type (Corporations | NonProfit | Cooperative | Sole Proprietorship) *required*
   - Description (3000 characters) *optional*
 
+`Only authenticated users should have access to create, update and delete companies.`
+
 - Considered Plus:
   - On each mutating operation, an event should be produced
   - Dockerize the application to be ready for building the production docker image
@@ -32,10 +34,20 @@
 - Docker for containerization 
 
 - Steps (Roughly):
-  - Create placeholders for files and functionalities
-  - Implement CRUD Functionality
-  - Implement DB Driver
-  - Implement Kafka Driver
-  - Implement "Auth" (JWT)
-  - Containerize
-  - If time, integration tests
+  - Create placeholders for files and functionalities - Check
+  - Implement CRUD Functionality - Check 
+  - Implement DB Driver - Check 
+  - Implement "Auth" (JWT) - TODO
+  - Implement Kafka Driver - TODO
+  - Containerize - TODO
+  - If time, integration tests - TODO
+
+### API Methods
+
+- Public
+  - GET `/api/company/{companyName}`, Get a signle Company by Name
+- JWT Protected
+  - POST `/api/company/` - Create a new Company Entry 
+  - PATCH `/api/company/{companyName}` - Update an existing Company Entry (by Name) 
+  - DELETE `/api/company/{companyName}` - Delete a single Company by Name
+

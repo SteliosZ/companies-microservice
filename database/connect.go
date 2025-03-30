@@ -14,7 +14,7 @@ type DBInstance struct {
 	DB *gorm.DB
 }
 
-var DB DBInstance
+var tx DBInstance
 
 type ConnectionConfig struct {
 	Host     string
@@ -52,14 +52,14 @@ func Connect() {
 	}
 
 	log.Println("Connection to DB successful")
-	err = db.AutoMigrate(&model.Company{})
+	err = db.AutoMigrate(&model.Company{}, &model.User{})
 	if err != nil {
 		log.Fatalf("database migration failure: %v", err.Error())
 	}
 
 	log.Println("Database Migrated successfully")
 
-	DB = DBInstance{
+	tx = DBInstance{
 		DB: db,
 	}
 }
