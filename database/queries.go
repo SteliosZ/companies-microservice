@@ -2,6 +2,7 @@ package database
 
 import (
 	"company/microservice/model"
+	"company/microservice/utils"
 )
 
 // GetCompany queries postgres to get one company by name
@@ -34,7 +35,7 @@ func DeleteCompany(name string) error {
 func UpdateCompany(companyName string, updatedFields map[string]interface{}) error {
 	var company = model.Company{}
 	res := tx.DB.First(&company, model.Company{Name: companyName})
-	if res.Error != nil {
+	if res != nil {
 		return res.Error
 	}
 
@@ -47,4 +48,22 @@ func CreateUser(user model.User) error {
 	err := tx.DB.Create(&user).Error
 
 	return err
+}
+
+func GetUserByEmail(u model.User) error {
+
+	var user = model.User{}
+	err := tx.DB.First(&user, model.User{Email: u.Email}).Error
+
+	if err != nil {
+		return err
+	}
+
+	err = utils.ComparePassword(user.Password, u.Password)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

@@ -3,13 +3,48 @@ package handler
 import (
 	"company/microservice/database"
 	"company/microservice/model"
+	"company/microservice/utils"
 	"net/http"
 
 	"github.com/gofiber/fiber/v2"
 )
 
 func Login(c *fiber.Ctx) error {
-	return nil
+	user := model.User{}
+
+	if err := c.BodyParser(&user); err != nil {
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"status":  "error",
+			"message": "wrong input data",
+			"data":    err,
+		})
+	}
+
+	err := database.GetUserByEmail(user)
+	if err != nil {
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
+			"status":  "error",
+			"message": "user or password wrong",
+			"data":    err,
+		})
+	}
+
+	token, err := utils.GenerateToken(user.ID)
+	if err != nil {
+		return c.Status(http.StatusInternalServerError).
+			JSON(fiber.Map{
+				"status":  "error",
+				"message": "user or password wrong",
+				"data":    "",
+			})
+	}
+
+	return c.Status(http.StatusOK).
+		JSON(fiber.Map{
+			"status":  "success",
+			"message": "user registered",
+			"data":    token,
+		})
 }
 
 func Register(c *fiber.Ctx) error {

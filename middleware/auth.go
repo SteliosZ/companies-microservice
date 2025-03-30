@@ -1,33 +1,23 @@
 package middleware
 
 import (
-	"company/microservice/config"
+	"os"
+
+	"github.com/gofiber/fiber/v2"
 
 	jwtware "github.com/gofiber/contrib/jwt"
-	"github.com/gofiber/fiber/v2"
 )
 
-func jwtError(c *fiber.Ctx, err error) error {
-	if err.Error() == "Missing or malformed JWT" {
-		return c.Status(fiber.StatusBadRequest).
-			JSON(fiber.Map{
-				"status":  "error",
-				"message": "Missing or malformed JWT",
-				"data":    nil,
-			})
-	}
-	return c.Status(fiber.StatusUnauthorized).
-		JSON(fiber.Map{
-			"status":  "error",
-			"message": "Invalid or expired JWT",
-			"data":    nil,
-		})
-}
-
-// Protected acts as an authentication middleware that checks JWT validity
-func Protected() fiber.Handler {
+func JWTProtected(c *fiber.Ctx) error {
 	return jwtware.New(jwtware.Config{
-		SigningKey:   jwtware.SigningKey{Key: []byte(config.Config("SECRET"))},
-		ErrorHandler: jwtError,
-	})
+		SigningKey: jwtware.SigningKey{Key: []byte(os.Getenv("JWT_SECRET"))},
+		ContextKey: "jwt",
+		ErrorHandler: func(c *fiber.Ctx, err error) error {
+			// Return status 401 and failed authentication error.
+			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
+				"error": true,
+				"msg":   err.Error(),
+			})
+		},
+	})(c)
 }
