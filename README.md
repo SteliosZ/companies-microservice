@@ -38,7 +38,8 @@
   - Implement CRUD Functionality - Done 
   - Implement DB Driver - Done 
   - Implement "Auth" (JWT) - Done
-  - Containerize - TODO
+  - Containerize - Done
+  - Change Project's Layout - TODO
   - Implement Kafka Driver - TODO
   - If time, integration tests - TODO
 
