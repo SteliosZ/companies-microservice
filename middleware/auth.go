@@ -8,7 +8,7 @@ import (
 	jwtware "github.com/gofiber/contrib/jwt"
 )
 
-func JWTProtected(c *fiber.Ctx) error {
+func JWTCheck(c *fiber.Ctx) error {
 	return jwtware.New(jwtware.Config{
 		SigningKey: jwtware.SigningKey{Key: []byte(os.Getenv("JWT_SECRET"))},
 		ContextKey: "jwt",

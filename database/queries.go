@@ -50,20 +50,20 @@ func CreateUser(user model.User) error {
 	return err
 }
 
-func GetUserByEmail(u model.User) error {
+func GetUserByEmail(u model.User) (model.User, error) {
 
 	var user = model.User{}
 	err := tx.DB.First(&user, model.User{Email: u.Email}).Error
 
 	if err != nil {
-		return err
+		return model.User{}, err
 	}
 
 	err = utils.ComparePassword(user.Password, u.Password)
 
 	if err != nil {
-		return err
+		return model.User{}, err
 	}
 
-	return nil
+	return user, nil
 }

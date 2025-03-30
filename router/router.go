@@ -22,7 +22,7 @@ func SetupRoutes(app *fiber.App) {
 	company := api.Group("/company")
 	company.Get("/:name", handler.GetCompanyByName)
 
-	company.Use(middleware.JWTProtected)
+	company.Use(middleware.JWTCheck)
 	company.Post("/", handler.CreateCompany)
 	company.Patch(":name", handler.UpdateCompany)
 	company.Delete("/:name", handler.DeleteCompany)

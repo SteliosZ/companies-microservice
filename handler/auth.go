@@ -4,6 +4,7 @@ import (
 	"company/microservice/database"
 	"company/microservice/model"
 	"company/microservice/utils"
+	"fmt"
 	"net/http"
 
 	"github.com/gofiber/fiber/v2"
@@ -20,7 +21,7 @@ func Login(c *fiber.Ctx) error {
 		})
 	}
 
-	err := database.GetUserByEmail(user)
+	foundUser, err := database.GetUserByEmail(user)
 	if err != nil {
 		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
 			"status":  "error",
@@ -29,13 +30,16 @@ func Login(c *fiber.Ctx) error {
 		})
 	}
 
-	token, err := utils.GenerateToken(user.ID)
+	token, err := utils.GenerateToken(foundUser.ID)
+
+	fmt.Println(token, user.ID)
+
 	if err != nil {
 		return c.Status(http.StatusInternalServerError).
 			JSON(fiber.Map{
 				"status":  "error",
 				"message": "user or password wrong",
-				"data":    "",
+				"data":    err,
 			})
 	}
 

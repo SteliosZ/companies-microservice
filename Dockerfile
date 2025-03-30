@@ -12,6 +12,7 @@ COPY *.go ./
 COPY config config
 COPY database database
 COPY handler handler
+COPY middleware middleware
 COPY model model
 COPY router router
 COPY utils utils
