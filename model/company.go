@@ -32,7 +32,7 @@ type Company struct {
 	Description       string      `gorm:"type:varchar(3000)" json:"description,omitempty"`
 	AmountOfEmployees int         `gorm:"type:integer;not null" json:"amount_of_employees"`
 	Registered        bool        `gorm:"type:boolean;not null" json:"registered"`
-	Type              CompanyType `gorm:"type:varchar(50);not null" json:"type"`
+	Type              CompanyType `gorm:"type:varchar(50);not null" json:"company_type"`
 }
 
 func (user *Company) BeforeCreate(tx *gorm.DB) (err error) {
