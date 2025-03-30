@@ -16,15 +16,34 @@ type DBInstance struct {
 
 var DB DBInstance
 
+type ConnectionConfig struct {
+	Host     string
+	User     string
+	Password string
+	DBName   string
+	Port     string
+	SSLMode  string
+}
+
 func Connect() {
+
+	connConfig := ConnectionConfig{
+		Host:     config.Config("POSTGRES_HOST"),
+		User:     config.Config("POSTGRES_USER"),
+		Password: config.Config("POSTGRES_PASSWORD"),
+		DBName:   config.Config("POSTGRES_DB"),
+		Port:     config.Config("POSTGRES_PORT"),
+		SSLMode:  config.Config("POSTGRES_SSLMODE"),
+	}
+
 	// Define Data Source Name
 	dsn := fmt.Sprintf("host=%v user=%v password=%v dbname=%v port=%v sslmode=%v",
-		config.Config("POSTGRES_HOST"),
-		config.Config("POSTGRES_USER"),
-		config.Config("POSTGRES_PASSWORD"),
-		config.Config("POSTGRES_DB"),
-		config.Config("POSTGRES_PORT"),
-		config.Config("POSTGRES_SSLMODE"),
+		connConfig.Host,
+		connConfig.User,
+		connConfig.Password,
+		connConfig.DBName,
+		connConfig.Port,
+		connConfig.SSLMode,
 	)
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})

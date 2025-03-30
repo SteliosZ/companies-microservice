@@ -3,6 +3,7 @@ package handler
 import (
 	"company/microservice/database"
 	"company/microservice/model"
+	"net/http"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -10,19 +11,26 @@ import (
 func GetCompany(c *fiber.Ctx) error {
 	// Handle Params
 	companyName := c.Params("name")
+	if companyName == "" {
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"status":  "error",
+			"message": "company name cannot be empty",
+			"data":    nil,
+		})
+	}
 
 	err, res := database.GetCompany(companyName)
 	if err != nil {
-		return c.Status(404).JSON(fiber.Map{
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
 			"status":  "error",
-			"message": "company not found",
+			"message": "could not get company",
 			"data":    err,
 		})
 	}
 
-	return c.Status(200).JSON(fiber.Map{
+	return c.Status(http.StatusOK).JSON(fiber.Map{
 		"status": "success",
-		"mesage": "got one company",
+		"mesage": "company fetched",
 		"data":   res,
 	})
 }
@@ -32,7 +40,7 @@ func CreateCompany(c *fiber.Ctx) error {
 
 	// Parse and Check Body
 	if err := c.BodyParser(&company); err != nil {
-		return c.Status(500).JSON(fiber.Map{
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
 			"status":  "error",
 			"message": "wrong input data",
 			"data":    err,
@@ -42,17 +50,17 @@ func CreateCompany(c *fiber.Ctx) error {
 	// db Query for Creation
 	err := database.CreateCompany(company)
 	if err != nil {
-		return c.Status(500).JSON(fiber.Map{
+		return c.Status(http.StatusUnprocessableEntity).JSON(fiber.Map{
 			"status":  "error",
 			"message": "company not created",
 			"data":    err,
 		})
 	}
 
-	return c.Status(201).JSON(fiber.Map{
+	return c.Status(http.StatusOK).JSON(fiber.Map{
 		"status":  "success",
 		"message": "company create",
-		"data":    company,
+		"data":    err,
 	})
 }
 
@@ -63,7 +71,7 @@ func UpdateCompany(c *fiber.Ctx) error {
 
 	// Parse and Check Body
 	if err := c.BodyParser(&newDetails); err != nil {
-		return c.Status(500).JSON(fiber.Map{
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
 			"status":  "error",
 			"message": "wrong input data",
 			"data":    err,
@@ -72,14 +80,14 @@ func UpdateCompany(c *fiber.Ctx) error {
 
 	err := database.UpdateCompany(companyName, newDetails)
 	if err != nil {
-		return c.Status(409).JSON(fiber.Map{
+		return c.Status(http.StatusConflict).JSON(fiber.Map{
 			"status": "error",
 			"mesage": "resource conflict",
 			"data":   err,
 		})
 	}
 
-	return c.Status(204).JSON(fiber.Map{
+	return c.Status(http.StatusNoContent).JSON(fiber.Map{
 		"status": "success",
 		"mesage": "company updated",
 		"data":   nil,
@@ -89,17 +97,24 @@ func UpdateCompany(c *fiber.Ctx) error {
 func DeleteCompany(c *fiber.Ctx) error {
 	// Handle Params
 	companyName := c.Params("name")
+	if companyName == "" {
+		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
+			"status":  "error",
+			"message": "company name cannot be empty",
+			"data":    nil,
+		})
+	}
 
 	err := database.DeleteCompany(companyName)
 	if err != nil {
-		return c.Status(409).JSON(fiber.Map{
+		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
 			"status":  "error",
 			"message": "company not deleted",
 			"data":    err,
 		})
 	}
 
-	return c.Status(200).JSON(fiber.Map{
+	return c.Status(http.StatusOK).JSON(fiber.Map{
 		"status": "success",
 		"mesage": "company deleted",
 		"data":   nil,
