@@ -11,16 +11,7 @@ import (
 
 func GetCompanyByID(c *fiber.Ctx) error {
 	// Handle Params
-	companyID := c.Params("id")
-	if companyID == "" {
-		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
-			"status":  "error",
-			"message": "company id cannot be empty",
-			"data":    nil,
-		})
-	}
-
-	companyUUID, err := uuid.FromString(companyID)
+	companyUUID, err := uuid.FromString(c.Params("id"))
 	if err != nil {
 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
 			"status":  "error",
@@ -77,19 +68,9 @@ func CreateCompany(c *fiber.Ctx) error {
 }
 
 func UpdateCompany(c *fiber.Ctx) error {
-	newDetails := map[string]any{}
+	var newDetails map[string]any
 
-	// Handle Params
-	companyID := c.Params("id")
-	if companyID == "" {
-		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
-			"status":  "error",
-			"message": "company id cannot be empty",
-			"data":    nil,
-		})
-	}
-
-	companyUUID, err := uuid.FromString(companyID)
+	companyUUID, err := uuid.FromString(c.Params("id"))
 	if err != nil {
 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
 			"status":  "error",
@@ -128,16 +109,7 @@ func UpdateCompany(c *fiber.Ctx) error {
 
 func DeleteCompany(c *fiber.Ctx) error {
 	// Handle Params
-	companyID := c.Params("id")
-	if companyID == "" {
-		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
-			"status":  "error",
-			"message": "company id cannot be empty",
-			"data":    nil,
-		})
-	}
-
-	companyUUID, err := uuid.FromString(companyID)
+	companyUUID, err := uuid.FromString(c.Params("id"))
 	if err != nil {
 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
 			"status":  "error",

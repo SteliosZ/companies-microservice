@@ -34,16 +34,17 @@ func DeleteCompany(companyID uuid.UUID) error {
 	return res.Error
 }
 
-func UpdateCompany(companyID uuid.UUID, updatedFields map[string]interface{}) error {
+func UpdateCompany(companyID uuid.UUID, updatedFields map[string]any) error {
 	var company = model.Company{}
-	res := tx.DB.First(&company, model.Company{ID: companyID})
+
+	res := tx.DB.First(&company, model.Company{ID: companyID}).Error
 	if res != nil {
-		return res.Error
+		return res
 	}
 
-	res = tx.DB.Model(&company).Updates(updatedFields)
+	res = tx.DB.Model(&company).Updates(updatedFields).Error
 
-	return res.Error
+	return res
 }
 
 func CreateUser(user model.User) error {
