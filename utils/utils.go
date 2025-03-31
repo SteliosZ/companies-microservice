@@ -2,7 +2,11 @@ package utils
 
 import (
 	"net/mail"
+	"os"
+	"time"
 
+	"github.com/gofrs/uuid/v5"
+	"github.com/golang-jwt/jwt/v5"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -32,4 +36,24 @@ func ComparePassword(hashedPassword, password string) error {
 	}
 
 	return nil
+}
+
+// GenerateJWT generates a jwt token
+func GenerateJWT(id *uuid.UUID) (string, error) {
+	// Create claims
+	claims := jwt.MapClaims{
+		"user_id": id,
+		"exp":     time.Now().Add(time.Hour * 72).Unix(),
+	}
+
+	// Generate Token
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	// Sign token with given secret from .env
+	t, err := token.SignedString([]byte(os.Getenv("JWT_SECRET")))
+	if err != nil {
+		return "", err
+	}
+
+	return t, nil
 }

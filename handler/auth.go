@@ -29,7 +29,7 @@ func Login(c *fiber.Ctx) error {
 		})
 	}
 
-	token, err := utils.GenerateToken(&foundUser.ID)
+	token, err := utils.GenerateJWT(&foundUser.ID)
 
 	if err != nil {
 		return c.Status(http.StatusInternalServerError).
