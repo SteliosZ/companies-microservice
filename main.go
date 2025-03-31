@@ -6,12 +6,19 @@ import (
 	"company/microservice/router"
 	"fmt"
 	"log"
+	"os"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
 func main() {
+	// load .env file
+	err := config.Config()
+	if err != nil {
+		log.Fatalf("configuration not loaded: %v", err)
+	}
+
 	// Initialize Rest
 	app := fiber.New(fiber.Config{
 		AppName: "Company Handler Microservice",
@@ -30,5 +37,5 @@ func main() {
 	})
 
 	// Start Rest
-	log.Fatal(app.Listen(fmt.Sprintf(":%v", config.Config("SERVICE_EXPOSED_PORT"))))
+	log.Fatal(app.Listen(fmt.Sprintf(":%v", os.Getenv("SERVICE_EXPOSED_PORT"))))
 }

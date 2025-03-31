@@ -1,10 +1,10 @@
 package database
 
 import (
-	"company/microservice/config"
 	"company/microservice/model"
 	"fmt"
 	"log"
+	"os"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -28,12 +28,12 @@ type ConnectionConfig struct {
 func ConnectToDB() {
 
 	connConfig := ConnectionConfig{
-		Host:     config.Config("POSTGRES_HOST"),
-		User:     config.Config("POSTGRES_USER"),
-		Password: config.Config("POSTGRES_PASSWORD"),
-		DBName:   config.Config("POSTGRES_DB"),
-		Port:     config.Config("POSTGRES_PORT"),
-		SSLMode:  config.Config("POSTGRES_SSLMODE"),
+		Host:     os.Getenv("POSTGRES_HOST"),
+		User:     os.Getenv("POSTGRES_USER"),
+		Password: os.Getenv("POSTGRES_PASSWORD"),
+		DBName:   os.Getenv("POSTGRES_DB"),
+		Port:     os.Getenv("POSTGRES_PORT"),
+		SSLMode:  os.Getenv("POSTGRES_SSLMODE"),
 	}
 
 	// Define Data Source Name

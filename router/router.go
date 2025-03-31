@@ -11,7 +11,6 @@ import (
 func SetupRoutes(app *fiber.App) {
 	// Health Check
 	api := app.Group("/api", logger.New())
-	api.Get("/", handler.Hello)
 
 	// JWT Middleware
 	auth := api.Group("/auth")
