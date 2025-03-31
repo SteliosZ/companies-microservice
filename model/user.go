@@ -3,7 +3,7 @@ package model
 import (
 	"company/microservice/utils"
 
-	"github.com/google/uuid"
+	"github.com/gofrs/uuid/v5"
 	"gorm.io/gorm"
 )
 
@@ -15,9 +15,9 @@ type User struct {
 }
 
 // BeforeCreate handles email string check, password hashing and uuid creation
-func (u *User) BeforeCreate(tx *gorm.DB) (err error) {
+func (u *User) BeforeCreate(tx *gorm.DB) error {
 	// uuid creation
-	u.ID = uuid.New()
+	u.ID, _ = uuid.NewV4()
 
 	// check email string validity
 	if err := utils.CheckEmailValidity(u.Email); err != nil {

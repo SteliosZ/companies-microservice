@@ -27,8 +27,8 @@ type Company struct {
 }
 
 // BeforeCreate handles uuid creation
-func (company *Company) BeforeCreate(tx *gorm.DB) (err error) {
+func (company *Company) BeforeCreate(tx *gorm.DB) error {
 	// uuid creation
-	company.ID, err = uuid.NewV4()
-	return err
+	company.ID, _ = uuid.NewV4()
+	return nil
 }

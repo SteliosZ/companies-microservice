@@ -3,11 +3,11 @@ package utils
 import (
 	"os"
 
+	"github.com/gofrs/uuid/v5"
 	"github.com/golang-jwt/jwt/v5"
-	"github.com/google/uuid"
 )
 
-func GenerateToken(id uuid.UUID) (string, error) {
+func GenerateToken(id *uuid.UUID) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"user_id": id,
 	})

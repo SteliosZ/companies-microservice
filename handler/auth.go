@@ -4,7 +4,6 @@ import (
 	"company/microservice/database"
 	"company/microservice/model"
 	"company/microservice/utils"
-	"fmt"
 	"net/http"
 
 	"github.com/gofiber/fiber/v2"
@@ -21,7 +20,7 @@ func Login(c *fiber.Ctx) error {
 		})
 	}
 
-	foundUser, err := database.GetUserByEmail(user)
+	foundUser, err := database.GetUserByEmail(&user)
 	if err != nil {
 		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
 			"status":  "error",
@@ -30,9 +29,7 @@ func Login(c *fiber.Ctx) error {
 		})
 	}
 
-	token, err := utils.GenerateToken(foundUser.ID)
-
-	fmt.Println(token, user.ID)
+	token, err := utils.GenerateToken(&foundUser.ID)
 
 	if err != nil {
 		return c.Status(http.StatusInternalServerError).
@@ -63,7 +60,7 @@ func Register(c *fiber.Ctx) error {
 		})
 	}
 
-	err := database.CreateUser(newUser)
+	err := database.CreateUser(&newUser)
 	if err != nil {
 		return c.Status(http.StatusUnprocessableEntity).
 			JSON(fiber.Map{

@@ -8,6 +8,8 @@ import (
 	jwtware "github.com/gofiber/contrib/jwt"
 )
 
+// JWTCheck cross-checks the given jwt bearer contained in headers
+// and returns the corresponding error if jwt is invalid
 func JWTCheck(c *fiber.Ctx) error {
 	return jwtware.New(jwtware.Config{
 		SigningKey: jwtware.SigningKey{Key: []byte(os.Getenv("JWT_SECRET"))},

@@ -20,7 +20,7 @@ func GetCompanyByID(c *fiber.Ctx) error {
 		})
 	}
 
-	err, res := database.GetCompany(companyUUID)
+	err, res := database.GetCompany(&companyUUID)
 	if err != nil {
 		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
 			"status":  "error",
@@ -49,7 +49,7 @@ func CreateCompany(c *fiber.Ctx) error {
 	}
 
 	// db Query for Creation
-	err := database.CreateCompany(company)
+	err := database.CreateCompany(&company)
 	if err != nil {
 		return c.Status(http.StatusUnprocessableEntity).
 			JSON(fiber.Map{
@@ -68,7 +68,7 @@ func CreateCompany(c *fiber.Ctx) error {
 }
 
 func UpdateCompany(c *fiber.Ctx) error {
-	var newDetails map[string]any
+	newDetails := model.Company{}
 
 	companyUUID, err := uuid.FromString(c.Params("id"))
 	if err != nil {
@@ -89,7 +89,7 @@ func UpdateCompany(c *fiber.Ctx) error {
 			})
 	}
 
-	err = database.UpdateCompany(companyUUID, newDetails)
+	err = database.UpdateCompany(&companyUUID, &newDetails)
 	if err != nil {
 		return c.Status(http.StatusConflict).
 			JSON(fiber.Map{
@@ -118,7 +118,7 @@ func DeleteCompany(c *fiber.Ctx) error {
 		})
 	}
 
-	err = database.DeleteCompany(companyUUID)
+	err = database.DeleteCompany(&companyUUID)
 	if err != nil {
 		return c.Status(http.StatusBadRequest).
 			JSON(fiber.Map{
