@@ -25,11 +25,11 @@ func main() {
 	})
 	app.Use(cors.New())
 
-	// Initialize DB Connection
-	database.ConnectToDB()
+	// // Initialize DB Connection
+	tx := database.ConnectToDB()
 
 	// Setup Routes
-	router.SetupRoutes(app)
+	router.SetupRoutes(app, tx)
 
 	// Handle Undefined Routes
 	app.Use(func(c *fiber.Ctx) error {

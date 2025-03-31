@@ -25,8 +25,11 @@ type ConnectionConfig struct {
 	SSLMode  string
 }
 
-func ConnectToDB() {
+// ConnectToDB provides a connection to postgresql
+// tx.DB is usable throughout
+func ConnectToDB() *DBInstance {
 
+	// Initialize Connection Configuration
 	connConfig := ConnectionConfig{
 		Host:     os.Getenv("POSTGRES_HOST"),
 		User:     os.Getenv("POSTGRES_USER"),
@@ -46,13 +49,19 @@ func ConnectToDB() {
 		connConfig.SSLMode,
 	)
 
+	// Start db connection
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("db connection failure: %v", err.Error())
 	}
 
 	log.Println("Connection to DB successful")
-	err = db.AutoMigrate(&model.Company{}, &model.User{})
+
+	// automigrate database from models
+	err = db.AutoMigrate(
+		&model.Company{},
+		&model.User{},
+	)
 	if err != nil {
 		log.Fatalf("database migration failure: %v", err.Error())
 	}
@@ -62,4 +71,6 @@ func ConnectToDB() {
 	tx = DBInstance{
 		DB: db,
 	}
+
+	return &tx
 }

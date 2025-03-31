@@ -1,28 +1,17 @@
 package router
 
 import (
-	"company/microservice/handler"
-	"company/microservice/middleware"
+	"company/microservice/database"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 )
 
-func SetupRoutes(app *fiber.App) {
+// SetupRoutes intializes every route
+func SetupRoutes(app *fiber.App, tx *database.DBInstance) {
 	// Health Check
 	api := app.Group("/api", logger.New())
 
-	// JWT Middleware
-	auth := api.Group("/auth")
-	auth.Post("/login", handler.Login)
-	auth.Post("/register", handler.Register)
-
-	// Company Routes
-	company := api.Group("/company")
-	company.Get("/:id", handler.GetCompanyByID)
-
-	company.Use(middleware.JWTCheck)
-	company.Post("/", handler.CreateCompany)
-	company.Patch(":id", handler.UpdateCompany)
-	company.Delete("/:id", handler.DeleteCompany)
+	RegisterUserRouter(api, tx)
+	RegisterCompanyRouter(api, tx)
 }

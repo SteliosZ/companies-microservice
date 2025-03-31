@@ -1,15 +1,31 @@
 package handler
 
 import (
-	"company/microservice/database"
 	"company/microservice/model"
+	"company/microservice/repository"
 	"net/http"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofrs/uuid/v5"
 )
 
-func GetCompanyByID(c *fiber.Ctx) error {
+type ICompanyHandler interface {
+	GetCompanyByID(c *fiber.Ctx) error
+	CreateCompany(c *fiber.Ctx) error
+	UpdateCompany(c *fiber.Ctx) error
+	DeleteCompany(c *fiber.Ctx) error
+}
+
+type CompanyHandler struct {
+	CompanyRepository repository.ICompanyRepository
+}
+
+func NewCompanyHandler(repo repository.ICompanyRepository) ICompanyHandler {
+	return &CompanyHandler{CompanyRepository: repo}
+}
+
+// GetCompanyByID retrieves a company entry from db
+func (h CompanyHandler) GetCompanyByID(c *fiber.Ctx) error {
 	// Handle Params
 	companyUUID, err := uuid.FromString(c.Params("id"))
 	if err != nil {
@@ -20,7 +36,7 @@ func GetCompanyByID(c *fiber.Ctx) error {
 		})
 	}
 
-	err, res := database.GetCompany(&companyUUID)
+	err, res := h.CompanyRepository.GetByID(&companyUUID)
 	if err != nil {
 		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
 			"status":  "error",
@@ -36,7 +52,8 @@ func GetCompanyByID(c *fiber.Ctx) error {
 	})
 }
 
-func CreateCompany(c *fiber.Ctx) error {
+// CreateCompany adds a new entry of company to the db
+func (h CompanyHandler) CreateCompany(c *fiber.Ctx) error {
 	company := model.Company{}
 
 	// Parse and Check Body
@@ -49,7 +66,7 @@ func CreateCompany(c *fiber.Ctx) error {
 	}
 
 	// db Query for Creation
-	err := database.CreateCompany(&company)
+	err := h.CompanyRepository.Create(&company)
 	if err != nil {
 		return c.Status(http.StatusUnprocessableEntity).
 			JSON(fiber.Map{
@@ -67,7 +84,8 @@ func CreateCompany(c *fiber.Ctx) error {
 		})
 }
 
-func UpdateCompany(c *fiber.Ctx) error {
+// UpdateCompany handler updates a company entry with given data
+func (h CompanyHandler) UpdateCompany(c *fiber.Ctx) error {
 	newDetails := model.Company{}
 
 	companyUUID, err := uuid.FromString(c.Params("id"))
@@ -89,7 +107,7 @@ func UpdateCompany(c *fiber.Ctx) error {
 			})
 	}
 
-	err = database.UpdateCompany(&companyUUID, &newDetails)
+	err = h.CompanyRepository.Update(&companyUUID, &newDetails)
 	if err != nil {
 		return c.Status(http.StatusConflict).
 			JSON(fiber.Map{
@@ -107,7 +125,8 @@ func UpdateCompany(c *fiber.Ctx) error {
 		})
 }
 
-func DeleteCompany(c *fiber.Ctx) error {
+// DeleteCompany handler contains the functionality of deleting a company entry from db
+func (h CompanyHandler) DeleteCompany(c *fiber.Ctx) error {
 	// Handle Params
 	companyUUID, err := uuid.FromString(c.Params("id"))
 	if err != nil {
@@ -118,7 +137,7 @@ func DeleteCompany(c *fiber.Ctx) error {
 		})
 	}
 
-	err = database.DeleteCompany(&companyUUID)
+	err = h.CompanyRepository.Delete(&companyUUID)
 	if err != nil {
 		return c.Status(http.StatusBadRequest).
 			JSON(fiber.Map{

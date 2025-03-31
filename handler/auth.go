@@ -1,15 +1,29 @@
 package handler
 
 import (
-	"company/microservice/database"
 	"company/microservice/model"
+	"company/microservice/repository"
 	"company/microservice/utils"
 	"net/http"
 
 	"github.com/gofiber/fiber/v2"
 )
 
-func Login(c *fiber.Ctx) error {
+type IUserHandler interface {
+	Login(c *fiber.Ctx) error
+	Register(c *fiber.Ctx) error
+}
+
+type UserHandler struct {
+	UserRepository repository.IUserRepository
+}
+
+func NewUserHandler(repo repository.IUserRepository) IUserHandler {
+	return &UserHandler{UserRepository: repo}
+}
+
+// Login handler contains the functionality of the "Login" feature
+func (h UserHandler) Login(c *fiber.Ctx) error {
 	user := model.User{}
 
 	if err := c.BodyParser(&user); err != nil {
@@ -20,7 +34,7 @@ func Login(c *fiber.Ctx) error {
 		})
 	}
 
-	foundUser, err := database.GetUserByEmail(&user)
+	foundUser, err := h.UserRepository.GetUserByEmail(&user)
 	if err != nil {
 		return c.Status(http.StatusBadRequest).JSON(fiber.Map{
 			"status":  "error",
@@ -48,7 +62,8 @@ func Login(c *fiber.Ctx) error {
 		})
 }
 
-func Register(c *fiber.Ctx) error {
+// Register handler contains the "Register" feature functionality
+func (h UserHandler) Register(c *fiber.Ctx) error {
 
 	newUser := model.User{}
 
@@ -60,7 +75,7 @@ func Register(c *fiber.Ctx) error {
 		})
 	}
 
-	err := database.CreateUser(&newUser)
+	err := h.UserRepository.CreateUser(&newUser)
 	if err != nil {
 		return c.Status(http.StatusUnprocessableEntity).
 			JSON(fiber.Map{
