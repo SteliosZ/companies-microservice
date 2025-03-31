@@ -3,14 +3,16 @@ package database
 import (
 	"company/microservice/model"
 	"company/microservice/utils"
+
+	"github.com/gofrs/uuid/v5"
 )
 
 // GetCompany queries postgres to get one company by name
-func GetCompany(companyName string) (error, model.Company) {
+func GetCompany(companyID uuid.UUID) (error, model.Company) {
 	var company = model.Company{}
 
 	// Query DB
-	res := tx.DB.First(&company, model.Company{Name: companyName})
+	res := tx.DB.First(&company, model.Company{ID: companyID})
 
 	return res.Error, company
 }
@@ -23,8 +25,8 @@ func CreateCompany(company model.Company) error {
 }
 
 // DeleteCompany soft deletes records from Company Table
-func DeleteCompany(name string) error {
-	var company = model.Company{Name: name}
+func DeleteCompany(companyID uuid.UUID) error {
+	var company = model.Company{ID: companyID}
 
 	// Query DB
 	res := tx.DB.Where(&company).Delete(&model.Company{})
@@ -32,9 +34,9 @@ func DeleteCompany(name string) error {
 	return res.Error
 }
 
-func UpdateCompany(companyName string, updatedFields map[string]interface{}) error {
+func UpdateCompany(companyID uuid.UUID, updatedFields map[string]interface{}) error {
 	var company = model.Company{}
-	res := tx.DB.First(&company, model.Company{Name: companyName})
+	res := tx.DB.First(&company, model.Company{ID: companyID})
 	if res != nil {
 		return res.Error
 	}

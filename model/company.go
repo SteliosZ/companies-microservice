@@ -1,7 +1,7 @@
 package model
 
 import (
-	"github.com/google/uuid"
+	"github.com/gofrs/uuid/v5"
 	"gorm.io/gorm"
 )
 
@@ -29,6 +29,6 @@ type Company struct {
 // BeforeCreate handles uuid creation
 func (company *Company) BeforeCreate(tx *gorm.DB) (err error) {
 	// uuid creation
-	company.ID = uuid.New()
-	return
+	company.ID, err = uuid.NewV4()
+	return err
 }
