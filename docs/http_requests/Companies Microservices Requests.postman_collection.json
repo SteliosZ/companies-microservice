@@ -13,7 +13,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"maoy@gmail.com\",\r\n    \"password\": \"1234\"\r\n}\r\n",
+					"raw": "{\r\n    \"email\": \"test@gmail.com\",\r\n    \"password\": \"1234\"\r\n}\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -42,7 +42,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"maoy@gmail.com\",\r\n    \"password\": \"1234\"\r\n}",
+					"raw": "{\r\n    \"email\": \"test@gmail.com\",\r\n    \"password\": \"1234\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -72,69 +72,14 @@
 			"response": []
 		},
 		{
-			"name": "Get One Company by Name",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "localhost:8080/api/company/one-company",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"company",
-						"one-company"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "Create Company",
 			"request": {
 				"auth": {
-					"type": "jwt",
-					"jwt": [
+					"type": "bearer",
+					"bearer": [
 						{
-							"key": "payload",
-							"value": "{\r\n    \"jwt\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNGRmN2YyNDYtNmMwZi00MmQzLWJhYjItMWFlYmQ4MmU0NzUzIn0.cDni4_3GeDRC-RXLSXDvkeP_Z4kQHUs1NSpT-Av6Src\"\r\n}",
-							"type": "string"
-						},
-						{
-							"key": "secret",
-							"value": "secret",
-							"type": "string"
-						},
-						{
-							"key": "addTokenTo",
-							"value": "header",
-							"type": "string"
-						},
-						{
-							"key": "isSecretBase64Encoded",
-							"value": false,
-							"type": "boolean"
-						},
-						{
-							"key": "algorithm",
-							"value": "HS256",
-							"type": "string"
-						},
-						{
-							"key": "headerPrefix",
-							"value": "Bearer",
-							"type": "string"
-						},
-						{
-							"key": "queryParamKey",
-							"value": "token",
-							"type": "string"
-						},
-						{
-							"key": "header",
-							"value": "{}",
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDM2NzUwODAsInVzZXJfaWQiOiI1YmIzYTUwNC1jMTdhLTRiNDgtYmVmMi1kNzAwMGE0NTFhMTYifQ.f2xl0V-xvZ45XXQ2qs-KTMYRv8sc9qUl3XOeyAiUCpQ",
 							"type": "string"
 						}
 					]
@@ -143,7 +88,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"one-company\",\r\n    \"description\": \"Company Description\",\r\n    \"amount_of_employees\": 10,\r\n    \"registered\": true,\r\n    \"company_type\": \"Corporations\"\r\n}",
+					"raw": "{\r\n    \"name\": \"a_company\",\r\n    \"description\": \"Company Description\",\r\n    \"amount_of_employees\": 10,\r\n    \"registered\": true,\r\n    \"company_type\": \"Corporations\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -165,49 +110,34 @@
 			"response": []
 		},
 		{
+			"name": "Get One Company by ID",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/api/company/cbd7f6e0-b793-4957-929d-39f79986106c",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"company",
+						"cbd7f6e0-b793-4957-929d-39f79986106c"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Update One Company by Name",
 			"request": {
 				"auth": {
-					"type": "jwt",
-					"jwt": [
+					"type": "bearer",
+					"bearer": [
 						{
-							"key": "algorithm",
-							"value": "HS256",
-							"type": "string"
-						},
-						{
-							"key": "payload",
-							"value": "{\r\n    \"jwt\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNGRmN2YyNDYtNmMwZi00MmQzLWJhYjItMWFlYmQ4MmU0NzUzIn0.cDni4_3GeDRC-RXLSXDvkeP_Z4kQHUs1NSpT-Av6Src\"\r\n}",
-							"type": "string"
-						},
-						{
-							"key": "secret",
-							"value": "secret",
-							"type": "string"
-						},
-						{
-							"key": "addTokenTo",
-							"value": "header",
-							"type": "string"
-						},
-						{
-							"key": "isSecretBase64Encoded",
-							"value": false,
-							"type": "boolean"
-						},
-						{
-							"key": "headerPrefix",
-							"value": "Bearer",
-							"type": "string"
-						},
-						{
-							"key": "queryParamKey",
-							"value": "token",
-							"type": "string"
-						},
-						{
-							"key": "header",
-							"value": "{}",
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDM2NzUwODAsInVzZXJfaWQiOiI1YmIzYTUwNC1jMTdhLTRiNDgtYmVmMi1kNzAwMGE0NTFhMTYifQ.f2xl0V-xvZ45XXQ2qs-KTMYRv8sc9qUl3XOeyAiUCpQ",
 							"type": "string"
 						}
 					]
@@ -216,7 +146,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"description\": \"Maoy?\"\r\n}",
+					"raw": "{\r\n    \"description\": \"Test???\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -224,7 +154,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/api/company/one-company",
+					"raw": "localhost:8080/api/company/cbd7f6e0-b793-4957-929d-39f79986106c",
 					"host": [
 						"localhost"
 					],
@@ -232,7 +162,7 @@
 					"path": [
 						"api",
 						"company",
-						"one-company"
+						"cbd7f6e0-b793-4957-929d-39f79986106c"
 					]
 				}
 			},
@@ -241,6 +171,16 @@
 		{
 			"name": "Delete One Company by Name",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NDM2NzUwODAsInVzZXJfaWQiOiI1YmIzYTUwNC1jMTdhLTRiNDgtYmVmMi1kNzAwMGE0NTFhMTYifQ.f2xl0V-xvZ45XXQ2qs-KTMYRv8sc9qUl3XOeyAiUCpQ",
+							"type": "string"
+						}
+					]
+				},
 				"method": "DELETE",
 				"header": [],
 				"body": {
@@ -253,7 +193,7 @@
 					}
 				},
 				"url": {
-					"raw": "localhost:8080/api/company/Makis",
+					"raw": "localhost:8080/api/company/60f9b776-f127-481b-9935-facea2fbe6e9",
 					"host": [
 						"localhost"
 					],
@@ -261,7 +201,7 @@
 					"path": [
 						"api",
 						"company",
-						"Makis"
+						"60f9b776-f127-481b-9935-facea2fbe6e9"
 					]
 				}
 			},
