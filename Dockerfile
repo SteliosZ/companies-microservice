@@ -14,6 +14,7 @@ COPY database database
 COPY handler handler
 COPY middleware middleware
 COPY model model
+COPY repository repository
 COPY router router
 COPY utils utils
 
