@@ -9,6 +9,7 @@ COPY .env.docker ./.env
 
 COPY *.go ./
 
+COPY app app
 COPY config config
 COPY database database
 COPY handler handler

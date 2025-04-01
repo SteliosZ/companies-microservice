@@ -1,9 +1,9 @@
 package main
 
 import (
+	"company/microservice/app"
 	"company/microservice/config"
 	"company/microservice/database"
-	"company/microservice/router"
 	"log"
 )
 
@@ -17,6 +17,6 @@ func main() {
 	// // Initialize DB Connection
 	tx := database.ConnectToDB()
 
-	// Initialize App
-	router.InitializeApp(tx)
+	// Initialize Rest
+	app.Setup(tx)
 }
