@@ -63,5 +63,6 @@ In order to run the application with Docker, you have to:
   - Implement "Auth" (JWT) - Done
   - Containerize - Done
   - Change Project's Layout - Done
-  - Integration tests - TODO
-  - Implement Kafka Driver - Not Done
+  - Integration tests - Not Implemented
+  - Implement Kafka Driver - Not Implemented
+

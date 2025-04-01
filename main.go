@@ -17,8 +17,6 @@ func main() {
 	// // Initialize DB Connection
 	tx := database.ConnectToDB()
 
-	// Initialize Handlers and Repositories
-
 	// Initialize App
 	router.InitializeApp(tx)
 }
